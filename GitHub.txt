@@ -1,0 +1,184 @@
+This file provides three MAGMA codes for this paper
+[Xue Jia, Qin Yue, and Huan Sun, Coding properties and automorphism groups of two classes of twisted generalized Reed-Solomon codes]
+
+
+
+A. The MAGMA code for Example 3.8:
+
+//Some initial values in Example 3.8.
+q:=3; k:=3; 
+eta1:=1; eta2:=2; 
+a:=2; b:=0; d:=1; 
+lam:=2; mu:=2;
+del:=a*d-b;                                                                                                                                //del=a*d-b is the determinant of the matrix A=(a b // 1 d).
+
+
+//Calculate the evaluation points for both codes, i.e., alp1,...,alp5 and beta1,...,beta5.
+K:=GF(q);
+P<x>:=PolynomialRing(K);
+m:=(eta1*x^k+x^(k-1))*(x+d)^2+mu*(1+eta2*k*a)*(x+d)-del*mu*eta2;m;                                 //m(x) is calculated by Theorem 3.6.
+S<w>:=SplittingField(m);S;                                                                                                        //The minimal splitting field of m(x).
+
+P<y>:=PolynomialRing(S);
+m1:=(eta1*y^k+y^(k-1))*(y+d)^2+mu*(1+eta2*k*a)*(y+d)-del*mu*eta2;
+Roots(m1);                                                                                                                                //All roots of m(x) in the splitting field.
+alp:=[Roots(m1)[1,1],Roots(m1)[2,1],Roots(m1)[3,1],Roots(m1)[4,1],Roots(m1)[5,1]]; alp;              //vector alpha
+alp1:=alp[1]; alp2:=alp[2]; alp3:=alp[3]; alp4:=alp[4]; alp5:=alp[5];
+
+//Calculate beta1; beta2; beta3; beta4; beta5; 
+beta:=[];
+for i:=1 to 5 do
+betai:=(a*Roots(m1)[i,1]+b)/(Roots(m1)[i,1]+d);
+Append(~beta,betai);
+end for; 
+beta;                                                                                                                                         //vector beta
+beta1:=beta[1]; beta2:=beta[2];beta3:=beta[3];beta4:=beta[4];beta5:=beta[5];
+
+
+//The column multipliers for both codes, i.e., v1,...,v5 and u1,...,u5.
+v:=[1,w^6,w^5,w,w^2]; v;                                                                                                         //Select 5-tuples v in S^* and output vector v
+v1:=v[1]; v2:=v[2]; v3:=v[3]; v4:=v[4]; v5:=v[5];
+u:=[];
+for i:=1 to 5 do
+ui:=lam*v[i]*(Roots(m1)[i,1]+d)^(k-2);    //u_i is calculated by Theorem 3.6.
+Append(~u,ui);
+end for; 
+u; u1:=u[1]; u2:=u[2]; u3:=u[3]; u4:=u[4]; u5:=u[5];                                                                    //vector u
+
+
+//The generator matrices of twisted generalized Reed-Solomn codes TGRS_3(alpha,v,eta1) and TGRS_3(beta,u,eta2)
+G1:= Matrix(S, 3, 5, 
+[v, [v[i]*alp[i] : i in [1..#v]], [v[i]*(alp[i]^(k-1)+eta1*alp[i]^k) : i in [1..#v]]]);                                  
+G2:= Matrix(S, 3, 5, 
+[u, [u[i]*beta[i] : i in [1..#u]], [u[i]*(beta[i]^(k-1)+eta2*beta[i]^k) : i in [1..#u]]]);
+
+//Verify that TGRS_3(alpha, v, eta1)=TGRS_3(beta, u, eta2)
+C1:=LinearCode(G1);C1;                                                                                                            //Linear code TGRS_3(alpha, v, eta1)
+C2:=LinearCode(G2);C2;                                                                                                            //Linear code TGRS_3(beta, u, eta2)
+C1 eq C2;
+
+
+
+
+
+
+
+
+B. The MAGMA code for Example 3.10:
+
+//Some initial values in Example 3.10.
+q:=3; k:=3; t:=3;
+eta1:=1; 
+a:=1; b:=2; d:=1; 
+lam:=2; mu:=1; 
+del:=a*d-b;                                                                                                                                             //del=a*d-b is the determinant of the matrix A=(a b // 1 d).
+
+//Calculate the evaluation points for both codes, i.e., alp1,...,alp6 and beta1,...,beta6.
+K:=GF(q);
+P<x>:=PolynomialRing(K);
+m1:=(eta1*x^(k-1+t)+x^(k-1))*(x+d)+mu;m1;                                                                                          //m1(x) is calculated by Corollary 3.9.
+S<w>:=SplittingField(m1);S;                                                                                                                    //The minimal splitting field of m1(x).
+
+P<y>:=PolynomialRing(S);
+m2:=(eta1*y^(k-1+t)+y^(k-1))*(y+d)+mu;
+Roots(m2);                                                                                                                                              //All roots of m1(x) in the splitting field.
+alp:=[Roots(m2)[1,1],Roots(m2)[2,1],Roots(m2)[3,1],Roots(m2)[4,1],Roots(m2)[5,1],Roots(m2)[6,1]]; alp; 
+alp1:=alp[1]; alp2:=alp[2]; alp3:=alp[3]; alp4:=alp[4]; alp5:=alp[5]; alp6:=alp[6];                                       //vector alpha
+
+//Calculate beta1; beta2; beta3; beta4; beta5; beta6;
+beta:=[];
+for i:=1 to 6 do
+betai:=(a*Roots(m2)[i,1]+b)/(Roots(m2)[i,1]+d);
+Append(~beta,betai);
+end for; 
+beta;                                                                                                                                                      //vector beta
+beta1:=beta[1]; beta2:=beta[2];beta3:=beta[3];beta4:=beta[4];beta5:=beta[5];beta6:=beta[6];
+
+
+//The column multipliers for both codes, i.e., v1,...,v6 and u1,...,u6.
+v:=[w^274,w^523,w^612,w^397,w^145,w^431]; v;                                                                               //Select 6-tuples v \in S^* and output vector v
+v1:=v[1]; v2:=v[2]; v3:=v[3]; v4:=v[4]; v5:=v[5]; v6:=v[6];
+u:=[];
+for i:=1 to 6 do
+ui:=lam*v[i]*(Roots(m2)[i,1]+d)^(k-2);     //u_i is calculated by Corollary 3.9.
+Append(~u,ui);
+end for; 
+u; u1:=u[1]; u2:=u[2]; u3:=u[3]; u4:=u[4]; u5:=u[5]; u6:=u[6];                                                                  //vector u
+
+
+//The generator matrices of twisted generalized Reed-Solomn code TGRS_3(alpha,v,eta1) and generalized Reed-Solomn code GRS_3(beta,u)
+G1:= Matrix(S, 3, 6, 
+[v, [v[i]*alp[i] : i in [1..#v]], [v[i]*(alp[i]^(k-1)+eta1*alp[i]^(k-1+t)) : i in [1..#v]]]);
+G2:= Matrix(S, 3, 6, 
+[u, [u[i]*beta[i] : i in [1..#u]], [u[i]*beta[i]^2 : i in [1..#u]]]);
+
+//Verify that TGRS_3(alpha,v,eta1)=GRS_3(beta,u)
+C1:=LinearCode(G1);C1;
+C2:=LinearCode(G2);C2;
+C1 eq C2;
+
+
+
+
+
+
+
+
+C. The MAGMA code for Example 3.11:
+
+//Some initial values in Example 3.11.
+q:=3; k:=5; t:=3;
+eta1:=2; 
+a:=1; b:=2; d:=1; 
+lam:=2; mu:=1;
+del:=a*d-b;                                                                                                                                                                                           //del=a*d-b is the determinant of the matrix A=(a b // 1 d).
+
+//Calculate the evaluation points for both codes, i.e., alp1,...,alp8 and beta1,...,beta8.
+K:=GF(q);
+P<x>:=PolynomialRing(K);
+m1:=(eta1*x^(k-1+t)+x^(k-1))*(x+d)+mu;m1;                                                                                                                                        //m1(x) is calculated by Corollary 3.9.
+S<w>:=SplittingField(m1);S;                                                                                                                                                                  //The minimal splitting field of m1(x).
+
+P<y>:=PolynomialRing(S);
+m2:=(eta1*y^(k-1+t)+y^(k-1))*(y+d)+mu;
+Roots(m2);                                                                                                                                                                                            //All roots of m1(x) in the splitting field.
+alp:=[Roots(m2)[1,1],Roots(m2)[2,1],Roots(m2)[3,1],Roots(m2)[4,1],Roots(m2)[5,1],Roots(m2)[6,1],Roots(m2)[7,1],Roots(m2)[8,1]]; alp;     //vector alpha
+alp1:=alp[1]; alp2:=alp[2]; alp3:=alp[3]; alp4:=alp[4]; alp5:=alp[5]; alp6:=alp[6]; alp7:=alp[7]; alp8:=alp[8];
+
+//Calculate beta1; beta2; beta3; beta4; beta5; beta6; beta7; beta8;
+beta:=[];
+for i:=1 to 8 do
+betai:=(a*Roots(m2)[i,1]+b)/(Roots(m2)[i,1]+d);
+Append(~beta,betai);
+end for; 
+beta;                                                                                                                                                                                                     //vector beta
+beta1:=beta[1]; beta2:=beta[2];beta3:=beta[3];beta4:=beta[4];beta5:=beta[5];beta6:=beta[6];beta7:=beta[7];beta8:=beta[8];
+
+
+//The column multipliers for both codes, i.e., v1,...,v8 and u1,...,u8.
+v:=[w^274,w^523,w^612,w^397,w^145,w^431,w^22,w^65]; v;                                                                                                            //Select 8-tuples v \in S^* and output vector v
+v1:=v[1]; v2:=v[2]; v3:=v[3]; v4:=v[4]; v5:=v[5]; v6:=v[6]; v7:=v[7]; v8:=v[8];
+u:=[];
+for i:=1 to 8 do
+ui:=lam*v[i]*(Roots(m2)[i,1]+d)^(k-2);//u_i is calculated by Corollary 3.9.
+Append(~u,ui);
+end for; 
+u; u1:=u[1]; u2:=u[2]; u3:=u[3]; u4:=u[4]; u5:=u[5]; u6:=u[6]; u7:=u[7]; u8:=u[8];                                                                                   //vector u
+
+
+//The generator matrices of twisted generalized Reed-Solomn code TGRS_5(alpha,v,eta1) and generalized Reed-Solomn code GRS_5(beta,u)
+G1:= Matrix(S, 5, 8, 
+[v, [v[i]*alp[i] : i in [1..#v]], [v[i]*alp[i]^2 : i in [1..#v]], [v[i]*alp[i]^3 : i in [1..#v]], [v[i]*(alp[i]^(k-1)+eta1*alp[i]^(k-1+t)) : i in [1..#v]]]);
+G2:= Matrix(S, 5, 8, 
+[u, [u[i]*beta[i] : i in [1..#u]], [u[i]*beta[i]^2 : i in [1..#u]], [u[i]*beta[i]^3 : i in [1..#u]], [u[i]*beta[i]^4 : i in [1..#u]]]);
+
+//Verify that TGRS_5(alpha,v,eta1)=GRS_5(beta,u)
+C1:=LinearCode(G1);C1;
+C2:=LinearCode(G2);C2;
+C1 eq C2;
+
+
+
+
+
+
