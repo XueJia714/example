@@ -48,13 +48,15 @@ u; u1:=u[1]; u2:=u[2]; u3:=u[3]; u4:=u[4]; u5:=u[5];                            
 
 //The generator matrices of twisted generalized Reed-Solomn codes TGRS_3(alpha,v,eta1) and TGRS_3(beta,u,eta2)
 G1:= Matrix(S, 3, 5, 
-[v, [v[i]*alp[i] : i in [1..#v]], [v[i]*(alp[i]^(k-1)+eta1*alp[i]^k) : i in [1..#v]]]);                                  
+[v, [v[i]*alp[i] : i in [1..#v]], [v[i]*(alp[i]^(k-1)+eta1*alp[i]^k) : i in [1..#v]]]);  
+G1;
 G2:= Matrix(S, 3, 5, 
 [u, [u[i]*beta[i] : i in [1..#u]], [u[i]*(beta[i]^(k-1)+eta2*beta[i]^k) : i in [1..#u]]]);
+G2;
 
 //Verify that TGRS_3(alpha, v, eta1)=TGRS_3(beta, u, eta2)
-C1:=LinearCode(G1);C1;                                                                              //Linear code TGRS_3(alpha, v, eta1)
-C2:=LinearCode(G2);C2;                                                                              //Linear code TGRS_3(beta, u, eta2)
+C1:=LinearCode(G1);                                                                                 //Linear code TGRS_3(alpha, v, eta1)
+C2:=LinearCode(G2);                                                                                 //Linear code TGRS_3(beta, u, eta2)
 C1 eq C2;
 
 
@@ -109,12 +111,14 @@ u; u1:=u[1]; u2:=u[2]; u3:=u[3]; u4:=u[4]; u5:=u[5]; u6:=u[6];                  
 //The generator matrices of twisted generalized Reed-Solomn code TGRS_3(alpha,v,eta1) and generalized Reed-Solomn code GRS_3(beta,u)
 G1:= Matrix(S, 3, 6, 
 [v, [v[i]*alp[i] : i in [1..#v]], [v[i]*(alp[i]^(k-1)+eta1*alp[i]^(k-1+t)) : i in [1..#v]]]);
+G1;
 G2:= Matrix(S, 3, 6, 
 [u, [u[i]*beta[i] : i in [1..#u]], [u[i]*beta[i]^2 : i in [1..#u]]]);
+G2;
 
 //Verify that TGRS_3(alpha,v,eta1)=GRS_3(beta,u)
-C1:=LinearCode(G1);C1;
-C2:=LinearCode(G2);C2;
+C1:=LinearCode(G1);                                                                                 //Linear code TGRS_3(alpha, v, eta1)
+C2:=LinearCode(G2);                                                                                 //Linear code GRS_3(beta, u)
 C1 eq C2;
 
 
@@ -169,12 +173,14 @@ u; u1:=u[1]; u2:=u[2]; u3:=u[3]; u4:=u[4]; u5:=u[5]; u6:=u[6]; u7:=u[7]; u8:=u[8
 //The generator matrices of twisted generalized Reed-Solomn code TGRS_5(alpha,v,eta1) and generalized Reed-Solomn code GRS_5(beta,u)
 G1:= Matrix(S, 5, 8, 
 [v, [v[i]*alp[i] : i in [1..#v]], [v[i]*alp[i]^2 : i in [1..#v]], [v[i]*alp[i]^3 : i in [1..#v]], [v[i]*(alp[i]^(k-1)+eta1*alp[i]^(k-1+t)) : i in [1..#v]]]);
+G1;
 G2:= Matrix(S, 5, 8, 
 [u, [u[i]*beta[i] : i in [1..#u]], [u[i]*beta[i]^2 : i in [1..#u]], [u[i]*beta[i]^3 : i in [1..#u]], [u[i]*beta[i]^4 : i in [1..#u]]]);
+G2;
 
 //Verify that TGRS_5(alpha,v,eta1)=GRS_5(beta,u)
-C1:=LinearCode(G1);C1;
-C2:=LinearCode(G2);C2;
+C1:=LinearCode(G1);                                                                                 //Linear code TGRS_5(alpha, v, eta1)
+C2:=LinearCode(G2);                                                                                 //Linear code TGRS_5(beta, u)
 C1 eq C2;
 
 
